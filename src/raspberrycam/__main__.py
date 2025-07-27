@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 from platformdirs import user_data_dir
 
-from raspberrycam.camera import PiCamera
+from raspberrycam.camera import LibCamera  # UPDATED: Import LibCamera instead of PiCamera
 from raspberrycam.config import load_config
 from raspberrycam.core import Raspberrycam
 from raspberrycam.image import S3ImageManager
@@ -32,7 +32,8 @@ def main(debug: bool = False, interval: int = 10800) -> None:
 
     location = Location(latitude=config.lat, longitude=config.lon)
     scheduler = FdriScheduler(location)
-    camera = PiCamera(1024, 768)
+    # UPDATED: Use LibCamera class, set quality and dimensions as desired
+    camera = LibCamera(quality=95, image_width=1024, image_height=768)
 
     # Option to set these in .env - they will load automatically
     AWS_ROLE_ARN = os.environ["AWS_ROLE_ARN"]
