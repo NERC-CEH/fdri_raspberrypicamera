@@ -97,7 +97,7 @@ class Raspberrycam:
             # Camera is ON - take pictures
             logger.info("Camera is in ON state, capturing image...")
             # Flip the image vertically since the camera is mounted upside down
-            self.camera.capture_image(self.image_manager.get_pending_image_path(), vflip=True, hflip=False)
+            self.camera.capture_image(self.image_manager.get_pending_image_path(), vflip=True, hflip=True)
 
             if len(self.image_manager.get_pending_images()) > 0:
                 raspberrypi.set_governer(raspberrypi.GovernorMode.PERFORMANCE, debug=self.debug)
