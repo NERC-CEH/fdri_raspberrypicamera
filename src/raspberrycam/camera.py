@@ -126,7 +126,7 @@ class LibCamera(CameraInterface):
 
         self.quality = quality
 
-    def capture_image(self, filepath: Path, vflip: bool = True, hflip: bool = False) -> None:
+    def capture_image(self, filepath: Path, vflip: bool = True, hflip: bool = True) -> None:
         """Captures an image and writes it to file
         Args:
             filepath: The output destination
