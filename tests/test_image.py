@@ -10,12 +10,10 @@ from raspberrycam.image import ImageManager, S3ImageManager
 from raspberrycam.s3 import S3Manager
 
 load_dotenv()
-AWS_ROLE_ARN = os.environ["AWS_ROLE_ARN"]
-AWS_BUCKET_NAME = os.environ["AWS_BUCKET_NAME"]
-AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
-
-s3 = S3Manager(role_arn=AWS_ROLE_ARN, access_key_id=AWS_ACCESS_KEY_ID, secret_access_key=AWS_SECRET_ACCESS_KEY)
+AWS_ROLE_ARN = os.environ.get("AWS_ROLE_ARN", "")
+AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
 
 # There are two of these Image Managers, one local and one S3 based

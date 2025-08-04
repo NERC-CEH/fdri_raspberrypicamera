@@ -36,10 +36,11 @@ def main(debug: bool = False, interval: int = 10800) -> None:
     camera = LibCamera(quality=95, image_width=1024, image_height=768)
 
     # Option to set these in .env - they will load automatically
-    AWS_ROLE_ARN = os.environ["AWS_ROLE_ARN"]
-    AWS_BUCKET_NAME = os.environ["AWS_BUCKET_NAME"]
-    AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-    AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+    # These will fall back to empty strings if they're not set in environment
+    AWS_ROLE_ARN = os.environ.get("AWS_ROLE_ARN", "")
+    AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     s3_manager = S3Manager(
         role_arn=AWS_ROLE_ARN, access_key_id=AWS_ACCESS_KEY_ID, secret_access_key=AWS_SECRET_ACCESS_KEY
