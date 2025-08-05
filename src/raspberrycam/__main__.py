@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from platformdirs import user_data_dir
 
+from raspberrycam.awsauth import AWSIoTAuth
 from raspberrycam.camera import LibCamera  # UPDATED: Import LibCamera instead of PiCamera
 from raspberrycam.config import load_config
 from raspberrycam.core import Raspberrycam
@@ -27,20 +28,31 @@ def main(debug: bool = False, interval: int = 10800) -> None:
     # Or if the config file can't be found.
     config = load_config("config/config.yaml")
 
-    if config.interval:
+    if config.interval and isinstance(int, config.interval):
         interval = config.interval
+        logging.info(f"Set capture interval to {interval}")
 
     location = Location(latitude=config.lat, longitude=config.lon)
     scheduler = FdriScheduler(location)
     # UPDATED: Use LibCamera class, set quality and dimensions as desired
     camera = LibCamera(quality=95, image_width=1024, image_height=768)
 
-    # Option to set these in .env - they will load automatically
-    # These will fall back to empty strings if they're not set in environment
     AWS_ROLE_ARN = os.environ.get("AWS_ROLE_ARN", "")
     AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
-    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+
+    # Option to create temporary credentials using a certificate
+    # Or to set them in .env - they will load automatically
+    # TODO - move the logic elsewhere. But it's readable this way
+    # TODO - do the role arn and bucket just belong in the config file now?
+
+    if config.private_key and config.public_key:
+        auth_info = AWSIoTAuth(config)
+        AWS_ACCESS_KEY_ID = auth_info.access_key_id
+        AWS_SECRET_ACCESS_KEY = auth_info.secret_access_key
+
+    else:
+        AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+        AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     s3_manager = S3Manager(
         role_arn=AWS_ROLE_ARN, access_key_id=AWS_ACCESS_KEY_ID, secret_access_key=AWS_SECRET_ACCESS_KEY

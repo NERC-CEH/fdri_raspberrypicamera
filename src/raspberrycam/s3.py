@@ -130,7 +130,9 @@ class S3Manager:
 
     credentials: AWSCredentials | None = None
 
-    def __init__(self, access_key_id: str, secret_access_key: str, role_arn: str) -> None:
+    def __init__(
+        self, access_key_id: str, secret_access_key: str, role_arn: str, session_token: Optional[str] = ""
+    ) -> None:
         """
         Args:
             access_key_id: The access key ID
@@ -140,6 +142,7 @@ class S3Manager:
         self.access_key_id = access_key_id
         self.secret_access_key = secret_access_key
         self.role_arn = role_arn
+        self.session_token = session_token
 
     def assume_role(self) -> None:
         """Assumes the role"""

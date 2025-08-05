@@ -13,6 +13,10 @@ class Config:
     catchment: str
     direction: str
     interval: int
+    private_key: Optional[str] = ""
+    public_key: Optional[str] = ""
+    endpoint: Optional[str] = ""
+    role_name: Optional[str] = ""
 
 
 class ConfigurationError(Exception):

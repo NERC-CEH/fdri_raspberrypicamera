@@ -2,9 +2,14 @@
 Test the simplest workflow for mTLS certificate based authentication.
 """
 
+import re
 from pathlib import Path
 
 import requests
+
+from raspberrycam.s3 import S3Manager
+
+CREDENTIALS_KEYS = ["accessKeyId", "secretAccessKey", "sessionToken"]
 
 
 def test_auth_flow(cert_file: Path, key_file: Path, cert_root: Path, endpoint: str, device_id: str, alias: str) -> None:
@@ -21,4 +26,18 @@ def test_auth_flow(cert_file: Path, key_file: Path, cert_root: Path, endpoint: s
     url = f"https://{endpoint}/role-aliases/{alias}/credentials"
     response = requests.get(url, cert=cert, headers=headers, verify=cert_root)
     assert response.status_code == 200
+
     assert "credentials" in response.json()
+    creds = response.json()["credentials"]
+    for k in CREDENTIALS_KEYS:
+        assert k in creds
+
+    options = {}
+    # Convert CamelCase to snake_case :/
+    for k in CREDENTIALS_KEYS:
+        key = re.sub(r"(?<!^)(?=[A-Z])", "_", k).lower()
+        options[key] = creds[k]
+
+    options["role_arn"] = "aws:arn:like:that"
+    s3 = S3Manager(**options)
+    assert s3
