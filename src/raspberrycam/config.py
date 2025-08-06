@@ -13,6 +13,7 @@ class Config:
     catchment: str
     direction: str
     interval: int
+    iot_auth: bool
     private_key: Optional[str] = ""
     public_key: Optional[str] = ""
     endpoint: Optional[str] = ""

@@ -34,18 +34,18 @@ def main(debug: bool = False, interval: int = 10800) -> None:
 
     location = Location(latitude=config.lat, longitude=config.lon)
     scheduler = FdriScheduler(location)
-    # UPDATED: Use LibCamera class, set quality and dimensions as desired
+    # Use LibCamera class, set quality and dimensions as desired
     camera = LibCamera(quality=95, image_width=1024, image_height=768)
 
+    # Note: the role ARN is only needed for key-based, not cert-based auth
     AWS_ROLE_ARN = os.environ.get("AWS_ROLE_ARN", "")
     AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
 
     # Option to create temporary credentials using a certificate
     # Or to set them in .env - they will load automatically
-    # TODO - move the logic elsewhere. But it's readable this way
-    # TODO - do the role arn and bucket just belong in the config file now?
+    # TODO - does the bucket name just belong in the config file?
 
-    if config.private_key and config.public_key:
+    if config.iot_auth:
         auth_info = AWSIoTAuth(config)
         AWS_ACCESS_KEY_ID = auth_info.access_key_id
         AWS_SECRET_ACCESS_KEY = auth_info.secret_access_key
@@ -55,7 +55,10 @@ def main(debug: bool = False, interval: int = 10800) -> None:
         AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     s3_manager = S3Manager(
-        role_arn=AWS_ROLE_ARN, access_key_id=AWS_ACCESS_KEY_ID, secret_access_key=AWS_SECRET_ACCESS_KEY
+        access_key_id=AWS_ACCESS_KEY_ID,
+        secret_access_key=AWS_SECRET_ACCESS_KEY,
+        role_arn=AWS_ROLE_ARN,
+        iot_auth=config.iot_auth,
     )
     # The other config options form part of the filename
     image_manager = S3ImageManager(AWS_BUCKET_NAME, s3_manager, user_data_dir("raspberrycam"), config)

@@ -34,10 +34,10 @@ class AWSIoTAuth:
             logging.error(f"Could not connect to {url} to authenticate")
             exit(1)
 
-        creds = response.json()["credentials"]
+        credentials = response.json()["credentials"]
 
         # Set the access key, secret key and session token as our atttributes
         # Convert CamelCase to snake_case :/
         for k in CREDENTIALS_KEYS:
             key = re.sub(r"(?<!^)(?=[A-Z])", "_", k).lower()
-            setattr(self, key, creds[k])
+            setattr(self, key, credentials[k])
