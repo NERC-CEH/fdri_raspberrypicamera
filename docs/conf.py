@@ -6,23 +6,42 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'raspberrycam'
-copyright = '2025, Jack Hambridge'
-author = 'Jack Hambridge'
-release = '0.1'
+project = 'FDRI Raspberry Pi Camera'
+copyright = '2025, UKCEH'
+author = 'UKCEH'
+
+release = "0.1.0"
+version = release
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+#    "sphinx.ext.autodoc",
+#    "sphinx.ext.napoleon",
+#    "sphinx.ext.intersphinx",
+    "sphinx_rtd_theme",
+    "sphinx_copybutton",
+]
+
+#napoleon_google_docstring = True
+#napoleon_use_param = False
+#napoleon_attr_attributes = True
+
+pygments_style = "sphinx"
+autodoc_member_order = "bysource"
+
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/3", None),
+}
 
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']

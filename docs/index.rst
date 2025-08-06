@@ -6,12 +6,18 @@
 raspberrycam documentation
 ==========================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
-
+The project contains code and configuration for Raspberry Pi cameras monitoring field sites as part of the Floods and Droughts Research Infrastructure.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   
+   self
+   aws/auth
+   aws/policy
+   aws/s3
+   sources/modules
+   genindex
+   modindex
+
 

@@ -17,6 +17,7 @@ class Config:
     public_key: Optional[str] = ""
     endpoint: Optional[str] = ""
     role_name: Optional[str] = ""
+    device_id: Optional[str] = ""
 
 
 class ConfigurationError(Exception):
