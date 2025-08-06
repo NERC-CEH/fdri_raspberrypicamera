@@ -130,7 +130,14 @@ class S3Manager:
 
     credentials: AWSCredentials | None = None
 
-    def __init__(self, access_key_id: str, secret_access_key: str, role_arn: str) -> None:
+    def __init__(
+        self,
+        access_key_id: str,
+        secret_access_key: str,
+        role_arn: Optional[str] = "",
+        session_token: Optional[str] = "",
+        iot_auth: Optional[bool] = False,
+    ) -> None:
         """
         Args:
             access_key_id: The access key ID
@@ -140,10 +147,23 @@ class S3Manager:
         self.access_key_id = access_key_id
         self.secret_access_key = secret_access_key
         self.role_arn = role_arn
+        self.session_token = session_token
+        self.iot_auth = iot_auth
 
     def assume_role(self) -> None:
-        """Assumes the role"""
-        self.credentials = assume_role(self.role_arn, self.access_key_id, self.secret_access_key)
+        """Assumes the role to upload images with, if needed.
+
+        If iot_auth is set (defaults to False) then we already have a role-based key.
+        If it's not, then explicitly assume the role using our identity-based key.
+        """
+        if self.iot_auth:
+            self.credentials = {
+                "access_key_id": self.access_key_id,
+                "secret_access_key": self.secret_access_key,
+                "session_token": self.session_token,
+            }
+        else:
+            self.credentials = assume_role(self.role_arn, self.access_key_id, self.secret_access_key)
 
     def upload(self, file_path: Path, bucket_name: str, object_name: str | None = None) -> bool:
         """Upload a file to S3"""

@@ -4,8 +4,11 @@ import subprocess
 from abc import ABC, abstractmethod
 from pathlib import Path
 
-from picamzero import Camera
-
+try:
+    from picamzero import Camera
+except ImportError as err:
+    logging.error(err)
+    pass
 logger = logging.getLogger(__name__)
 
 
