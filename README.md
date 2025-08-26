@@ -19,7 +19,7 @@ Load the code onto a Raspberry Pi by pulling the git repository to it. To do thi
 Clone the repository
 
 ```shell
-git clone https://github.com/NERC-CEH/FDRI_RaspberryPi_Scripts
+git clone https://github.com/NERC-CEH/fdri_raspberrypicamera
 ```
 
 When there is a code change you can then run:
