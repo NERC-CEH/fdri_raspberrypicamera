@@ -145,7 +145,7 @@ class LibCamera(CameraInterface):
             logger.info(f"Capturing image{flip_text}")
 
             cmd = [
-                "libcamera-still",
+                "rpicam-still",
                 "--width",
                 str(self.image_width),
                 "--height",
