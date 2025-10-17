@@ -4,9 +4,3 @@ lon: -0.2031049
 catchment: SE
 direction: E
 interval: 10800
-iot_auth: true
-private_key: default-private.key
-public_key: default-certificate.key
-endpoint: iot_credentials_endpoint
-role_name: upload_role
-device_id: default
