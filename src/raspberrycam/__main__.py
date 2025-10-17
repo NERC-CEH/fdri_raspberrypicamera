@@ -7,7 +7,6 @@ import os
 from dotenv import load_dotenv
 from platformdirs import user_data_dir
 
-from raspberrycam.awsauth import AWSIoTAuth
 from raspberrycam.camera import LibCamera  # UPDATED: Import LibCamera instead of PiCamera
 from raspberrycam.config import load_config
 from raspberrycam.core import Raspberrycam
@@ -28,37 +27,23 @@ def main(debug: bool = False, interval: int = 10800) -> None:
     # Or if the config file can't be found.
     config = load_config("config/config.yaml")
 
-    if config.interval and isinstance(int, config.interval):
+    if config.interval:
         interval = config.interval
-        logging.info(f"Set capture interval to {interval}")
 
     location = Location(latitude=config.lat, longitude=config.lon)
     scheduler = FdriScheduler(location)
-    # Use LibCamera class, set quality and dimensions as desired
+    # UPDATED: Use LibCamera class, set quality and dimensions as desired
     camera = LibCamera(quality=95, image_width=1024, image_height=768)
 
-    # Note: the role ARN is only needed for key-based, not cert-based auth
+    # Option to set these in .env - they will load automatically
+    # These will fall back to empty strings if they're not set in environment
     AWS_ROLE_ARN = os.environ.get("AWS_ROLE_ARN", "")
     AWS_BUCKET_NAME = os.environ.get("AWS_BUCKET_NAME", "")
-
-    # Option to create temporary credentials using a certificate
-    # Or to set them in .env - they will load automatically
-    # TODO - does the bucket name just belong in the config file?
-
-    if config.iot_auth:
-        auth_info = AWSIoTAuth(config)
-        AWS_ACCESS_KEY_ID = auth_info.access_key_id
-        AWS_SECRET_ACCESS_KEY = auth_info.secret_access_key
-
-    else:
-        AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-        AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     s3_manager = S3Manager(
-        access_key_id=AWS_ACCESS_KEY_ID,
-        secret_access_key=AWS_SECRET_ACCESS_KEY,
-        role_arn=AWS_ROLE_ARN,
-        iot_auth=config.iot_auth,
+        role_arn=AWS_ROLE_ARN, access_key_id=AWS_ACCESS_KEY_ID, secret_access_key=AWS_SECRET_ACCESS_KEY
     )
     # The other config options form part of the filename
     image_manager = S3ImageManager(AWS_BUCKET_NAME, s3_manager, user_data_dir("raspberrycam"), config)

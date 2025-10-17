@@ -13,12 +13,6 @@ class Config:
     catchment: str
     direction: str
     interval: int
-    iot_auth: bool
-    private_key: Optional[str] = ""
-    public_key: Optional[str] = ""
-    endpoint: Optional[str] = ""
-    role_name: Optional[str] = ""
-    device_id: Optional[str] = ""
 
 
 class ConfigurationError(Exception):
