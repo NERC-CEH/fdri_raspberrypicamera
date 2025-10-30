@@ -1,7 +1,9 @@
 import logging
 import time
 from datetime import datetime
+from operator import truediv
 
+import wdt
 from dateutil.tz import tzlocal
 
 from raspberrycam import raspberrypi
@@ -31,6 +33,9 @@ class Raspberrycam:
     """Tracks how many images have been captured since the last upload,
         Allows the app to bulk upload images"""
 
+    use_wdt: bool
+    """flag to indicate whether watchdog should be used"""
+
     def __init__(
         self,
         scheduler: FdriScheduler,
@@ -54,10 +59,14 @@ class Raspberrycam:
         self.image_manager = image_manager
         self._intervals_since_last_upload = 0
         self.debug = debug
+        self.use_wdt = True #TODO update from configuration
+
+
 
     def run(self) -> None:
         """Runs main loop of code until exited"""
-
+        wdt.setOffInterval(300)
+        wdt.setPeriod()
         raspberrypi.set_governer(raspberrypi.GovernorMode.ONDEMAND, debug=self.debug)
         while True:
             now = datetime.now(tzlocal())
@@ -73,12 +82,16 @@ class Raspberrycam:
                 # Sleep until close to the next ON time
                 sleep_duration = (next_on_time - now).total_seconds()
                 if sleep_duration > 0:
+                    if self.use_wdt:
+                        wdt.setOffInterval(sleep_duration)
+                        wdt.setPeriod(1)
                     # Sleep for most of the duration, but wake up occasionally to check
                     # In case of time changes, system restarts, etc.
                     logger.debug(f"waiting for {sleep_duration}")
                     while sleep_duration > sleep_for:  # 5 minutes
                         logger.debug(f"sleeping for {sleep_for} seconds")
                         time.sleep(sleep_for)
+
                         sleep_duration -= sleep_for
                         # Re-check the time in case something changed
                         now = datetime.now(tzlocal())
