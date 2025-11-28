@@ -12,6 +12,11 @@ sudo apt-get install python3 python3-picamzero python3-libcamera libcap-dev -y
 sudo cp config/rpi-camera.service /etc/systemd/system/rpi-camera.service
 cp camera_startup.sh $HOME/camera_startup.sh
 chmod 0775 $HOME/camera_startup.sh
+
+# Enable time sychronization services
+sudo systemctl enable systemd-timesyncd.service
+sudo systemctl enable systemd-time-wait-sync.service
+
 sudo systemctl enable rpi-camera.service 
 sudo systemctl start rpi-camera.service
 
