@@ -9,7 +9,7 @@
 # Enable I2C interface for watchdog
 sudo raspi-config nonint do_i2c 0
 
-# Clone wdt repoistory
+# Clone wdt repository
 git clone https://github.com/SequentMicrosystems/wdt-rpi.git
 cd wdt-rpi/
 sudo make install
