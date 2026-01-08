@@ -20,7 +20,7 @@ from raspberrycam.scheduler import FdriScheduler
 load_dotenv()
 
 
-def main(debug: bool = True, interval: int = 10800) -> None:
+def main(debug: bool = False, interval: int = 10800) -> None:
     """Example invocation of the RasberryCam class"""
 
     # This will throw an error and complain if keys aren't set,
