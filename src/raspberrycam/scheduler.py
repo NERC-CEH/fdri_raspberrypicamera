@@ -61,7 +61,7 @@ class FdriScheduler:
 
         return [
             {"time": stats["sunrise"], "state": ScheduleState.ON},
-            {"time": stats["sunset"], "state": ScheduleState.ON},
+            {"time": stats["sunset"], "state": ScheduleState.OFF},
         ]
 
     def get_next_on_time(self, time: datetime) -> datetime:
