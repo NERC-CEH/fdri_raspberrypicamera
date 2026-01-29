@@ -1,3 +1,5 @@
+import os
+import time
 import logging
 import subprocess
 from datetime import datetime
@@ -58,7 +60,8 @@ def shutdown(debug: bool = False) -> None:
         subprocess.run("sync", shell=True, check=False)
 
         # Execute shutdown command
-        subprocess.run("sudo shutdown -h now", check=False)
+        time.sleep(600)
+        os.system("sudo shutdown -h now")
     except Exception as e:
         logger.error(f"Failed to shutdown: {e}")
 

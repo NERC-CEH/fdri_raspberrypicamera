@@ -109,6 +109,7 @@ def upload_to_s3(
             ExtraArgs={"StorageClass": "STANDARD"},  # Use standard storage class
         )
         logger.info(f"File uploaded to S3: s3://{bucket_name}/{object_name}")
+        
         return True
     except FileNotFoundError:
         logger.error(f"File not found: {file_path}")

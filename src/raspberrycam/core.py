@@ -103,4 +103,5 @@ class Raspberrycam:
                 raspberrypi.set_governer(raspberrypi.GovernorMode.PERFORMANCE, debug=self.debug)
                 self.image_manager.upload_pending(debug=self.debug)
 
+
             time.sleep(self.capture_interval)
