@@ -1,6 +1,7 @@
 [Unit] 
 Description=Raspberry Pi Camera Service 
-After=network.target 
+After=time-sync.target
+Wants=time-sync.target
 
 [Service] 
 Type=simple 
