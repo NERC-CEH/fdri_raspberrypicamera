@@ -22,7 +22,7 @@ chmod +x /home/ukceh/fdri_raspberrypicamera/wdt-rpi/scripts/ups-debug.sh
 crontab -l > mycron
 # Set up new entry in file
 new_entry="* * * * * sudo /home/ukceh/fdri_raspberrypicamera/wdt-rpi/scripts/ups-debug.sh"
-if ! crontab -l | fgrep -q "$new_entry"; then#
+if ! crontab -l | fgrep -q "$new_entry"; then
 	# echo new cron into cron file
 	echo "$new_entry" >> mycron
 	# Install new cron file
