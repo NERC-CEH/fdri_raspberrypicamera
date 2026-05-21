@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Optional
 
 import yaml
-from urllib3.util.util import to_str
 
 
 @dataclass
@@ -33,6 +32,6 @@ def load_config(config_file: Optional[str] = "config.yaml") -> dict:
         return Config(**config)
 
     except TypeError as err:
-        logging.error(f"{config_file} did not contain all the information it needs: " + to_str(err))
+        logging.error(f"{config_file} did not contain all the information it needs")
         logging.error(err)
         raise ConfigurationError(err)
