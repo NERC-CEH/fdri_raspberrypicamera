@@ -118,7 +118,9 @@ class Raspberrycam:
                 self.image_manager.upload_pending(debug=self.debug)
 
             if self.switch_off:
+                logger.info("Switching camera off for " + self.capture_interval)
                 wdt.setOffInterval(self.capture_interval)
                 shutdown()
             else:
+                logger.info(f"Sleeping for {self.capture_interval} seconds...")
                 time.sleep(self.capture_interval)

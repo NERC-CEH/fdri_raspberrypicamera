@@ -15,6 +15,9 @@ chmod 0775 $HOME/camera_startup.sh
 sudo systemctl enable rpi-camera.service 
 sudo systemctl start rpi-camera.service
 
+sudo rpi-eeprom-update
+sudo rpi-eeprom-config --config ~/fdri_raspberrypicamera/config/bootconf.txt
+
 python -m venv --system-site-packages .venv
 source .venv/bin/activate
 pip install -e . 
