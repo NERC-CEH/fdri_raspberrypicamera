@@ -13,7 +13,7 @@ class Config:
     catchment: str
     direction: str
     interval: int
-
+    switch_off: bool
 
 class ConfigurationError(Exception):
     pass

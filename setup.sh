@@ -53,4 +53,11 @@ sudo systemctl enable systemd-time-wait-sync.service
 sudo systemctl enable rpi-camera.service 
 sudo systemctl start rpi-camera.service
 
-# python -m raspberrycam
+sudo rpi-eeprom-update
+sudo rpi-eeprom-config --config ~/fdri_raspberrypicamera/config/bootconf.txt
+
+python -m venv --system-site-packages .venv
+source .venv/bin/activate
+pip install -e . 
+
+# python -m rasberrycam 

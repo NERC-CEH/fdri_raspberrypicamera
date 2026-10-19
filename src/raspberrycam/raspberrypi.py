@@ -1,5 +1,6 @@
-import logging
+import logging, os
 import subprocess
+import sys
 from datetime import datetime
 from enum import StrEnum
 
@@ -58,7 +59,10 @@ def shutdown(debug: bool = False) -> None:
         subprocess.run("sync", shell=True, check=False)
 
         # Execute shutdown command
-        subprocess.run("sudo shutdown -h now", check=False)
+        os.system("sudo shutdown -h now")
+
+        # Exit the script
+        sys.exit(0)
     except Exception as e:
         logger.error(f"Failed to shutdown: {e}")
 

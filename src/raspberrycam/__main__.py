@@ -20,7 +20,7 @@ from raspberrycam.scheduler import FdriScheduler
 load_dotenv()
 
 
-def main(debug: bool = False, interval: int = 10800) -> None:
+def main(debug: bool = False, interval: int = 10800, switch_off: bool = False) -> None:
     """Example invocation of the RasberryCam class"""
 
     # This will throw an error and complain if keys aren't set,
@@ -29,6 +29,9 @@ def main(debug: bool = False, interval: int = 10800) -> None:
 
     if config.interval:
         interval = config.interval
+
+    if config.switch_off:
+        switch_off = config.switch_off
 
     location = Location(latitude=config.lat, longitude=config.lon)
     scheduler = FdriScheduler(location)
@@ -53,7 +56,7 @@ def main(debug: bool = False, interval: int = 10800) -> None:
         log_level = logging.DEBUG
     setup_logging(filename=image_manager.log_file, level=log_level)
     app = Raspberrycam(
-        scheduler=scheduler, camera=camera, image_manager=image_manager, capture_interval=interval, debug=debug
+        scheduler=scheduler, camera=camera, image_manager=image_manager, capture_interval=interval, debug=debug, switch_off=switch_off
     )
     app.run()
 
