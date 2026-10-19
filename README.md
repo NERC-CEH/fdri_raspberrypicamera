@@ -77,6 +77,9 @@ direction: E
 ### Setup script
 
 `setup.sh` automates most steps of the setup - upgrades the Pi's packages with apt, installs our python code and configures it to run through `systemctl`.
+```shell
+cd /home/ukceh/fdri_raspberrypicamera
+```
 
 ```shell
 bash setup.sh
